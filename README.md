@@ -10,9 +10,9 @@ For example, a golfer can decide to hit driver off the tee or decide to hit a sa
 
 ## Concepts
 
-** Component-based architecture implemented with a three-tier architecture that separates the view and viewmodels from the service/business logic layer and the data layer, which in this case does not keep permnanent records but only stores data creating in each iteration of the application.
+* Component-based architecture implemented with a three-tier architecture that separates the view and viewmodels from the service/business logic layer and the data layer, which in this case does not keep permnanent records but only stores data creating in each iteration of the application.
 
-** Recursion. The application allows for the creation of theoretically infinite nested scenarios. To perform various operations such as looking up all children or finding a scenario in the tree, recursion is necessary.
+* Recursion. The application allows for the creation of theoretically infinite nested scenarios. To perform various operations such as looking up all children or finding a scenario in the tree, recursion is necessary.
 
 ## Development server
 
