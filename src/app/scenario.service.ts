@@ -40,7 +40,7 @@ export class ScenarioService{
 
       edit(scenario, id){
         scenario["id"] = parseInt(id);
-        return this.http.put('mediaitems', scenario).pipe(catchError(this.handleError));
+        return this.http.put('scenarios', scenario).pipe(catchError(this.handleError));
       }
 
       private handleError(error: HttpErrorResponse){
@@ -77,7 +77,7 @@ export class ScenarioService{
       public isProbabilityGroupToHigh(parentScenario, scenarioID, newValue): boolean{
         let totalProbability = 0;
         let parent;
-        this.getById(parentScenario.id).subscribe((scenarioReturn) =>
+        this.getById(parentScenario).subscribe((scenarioReturn) =>
         {
             parent = scenarioReturn;
         });

@@ -9,7 +9,7 @@ import { ScenarioService, Scenario } from "./scenario.service";
 })
 export class ScenarioFormComponent implements OnInit {
     form: FormGroup;
-    @Input() parent: Scenario;
+    @Input() parent: number;
     @Input() editID: number;
     @Input() isEdit: boolean;
     probabilityRegex = /^-?\d*[.,]?\d{0,4}$/;
@@ -98,6 +98,7 @@ export class ScenarioFormComponent implements OnInit {
     }
 
     onSubmit(scenario){
+        scenario.parent = this.parent;
         if (this.isEdit)
         {
             this.scenarioService.edit(scenario, this.editID).subscribe(() =>
@@ -107,7 +108,6 @@ export class ScenarioFormComponent implements OnInit {
             });
             return;
         }
-        scenario.parent = this.parent;
         this.scenarioService.add(scenario).subscribe(() =>
         {
             this.scenarioService.refresh();

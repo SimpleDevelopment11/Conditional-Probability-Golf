@@ -28,20 +28,8 @@ export class MockXHRBackend implements HttpBackend {
           break;
         case 'POST':
           const scenario = request.body;
-          scenario.id = this._getNewId();
-          scenario.childrenScenarios = [];
-          const parentScenario = this._getScenarioByValues(scenario.parent, this.scenarios);
-          if (parentScenario)
-          {
-            parentScenario.childrenScenarios.push(scenario);
-          }
-          else
-          {
-            scenario.strokes = "Missing full Probability"
-            this.scenarios.push(scenario);
-          }
+          this._createScenario(scenario);
           responseOptions = {status: 201};
-          this._checkForProbability(scenario);
           break;
         case 'DELETE':
           const id = parseInt(request.url.split('/')[1], 10);
@@ -52,12 +40,6 @@ export class MockXHRBackend implements HttpBackend {
           const scenarioEdit = request.body;
           this._updateScenario(scenarioEdit);
           responseOptions = {status: 201};
-          let realScenario = this._getScenarioByID(scenarioEdit.id, this.scenarios);
-          this._checkForProbability(realScenario);
-          if (realScenario.childrenScenarios.length > 0)
-          {
-            this._checkForProbability(realScenario.childrenScenarios[0]);
-          }
           break;
       }
 
@@ -69,9 +51,27 @@ export class MockXHRBackend implements HttpBackend {
     });
   }
 
+  _createScenario(scenario)
+  {
+    scenario.id = this._getNewId();
+      scenario.childrenScenarios = [];
+      const parentScenario = this._getScenarioByID(scenario.parent, this.scenarios);
+      if (parentScenario)
+      {
+        parentScenario.childrenScenarios.push(scenario);
+      }
+      else
+      {
+        scenario.strokes = "Missing full Probability"
+        this.scenarios.push(scenario);
+      }
+      this._updateCheck(scenario);
+      return;
+  }
+
   _deleteScenario(id) {
     const scenario = this._getScenarioByID(id, this.scenarios);
-    const parent = this._getScenarioByValues(scenario.parent, this.scenarios);
+    const parent = this._getScenarioByID(scenario.parent, this.scenarios);
     if (parent === null)
     {
       const index = this.scenarios.indexOf(scenario);
@@ -86,6 +86,7 @@ export class MockXHRBackend implements HttpBackend {
     {
       parent.childrenScenarios.splice(index, 1);
     }
+    this._updateCheck(scenario);
   }
 
   _updateScenario(scenarioEdit){
@@ -102,11 +103,21 @@ export class MockXHRBackend implements HttpBackend {
         scenario.strokes = scenarioEdit.strokes;
       }
     }
+    this._updateCheck(scenario);
     return;
   }
 
+  _updateCheck(scenario)
+  {
+    this._checkForProbability(scenario);
+    if (scenario.childrenScenarios.length > 0)
+    {
+      this._checkForProbability(scenario.childrenScenarios[0]);
+    }
+  }
+
   _checkForProbability(scenario){
-    let parentScenario = this._getScenarioByValues(scenario.parent, this.scenarios);
+    let parentScenario = this._getScenarioByID(scenario.parent, this.scenarios);
     if (!parentScenario){
       return;
     }
@@ -123,9 +134,13 @@ export class MockXHRBackend implements HttpBackend {
       expectedStrokes += probability * strokes;
     });
     if (totalProbability == 1){
-      parentScenario.strokes = parentScenario.parent === null ? expectedStrokes : expectedStrokes + 1;
-      this._checkForProbability(parentScenario);
+      parentScenario.strokes = parentScenario.parent === null ? expectedStrokes : (expectedStrokes + 1).toString();
     }
+    else
+    {
+      parentScenario.strokes = parentScenario.parent === null ? "Missing full Probability" : "1";
+    }
+    this._checkForProbability(parentScenario);
 
   }
 
