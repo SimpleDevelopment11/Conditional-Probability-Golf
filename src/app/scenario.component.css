@@ -1,0 +1,86 @@
+:host{
+    display:block;
+    margin:1.25rem auto;
+}
+
+:host:not(.topLevelScenario){
+    width:94%;
+}
+
+div.wrapper{
+    border:2px solid #320087;
+    padding:2rem;
+    border-radius:5px;
+    display:block;
+}
+
+div.wrapper.waiting-state{
+    border-color:#ffff00;
+}
+
+div.wrapper.good-state{
+    border-color:#17ff17;
+}
+
+h2{
+    text-align:left;
+    font-size:1.72rem;
+    color:#efefef;
+    font-weight:bold;
+}
+
+.addScenarioDiv{
+    display:block;
+    margin:1.72rem 0;
+}
+
+h3{
+    display:inline-block;
+    text-align:left;
+    font-style:italic;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size:1.64rem;
+    color:#efefef;
+    border-radius:8px;
+    position:relative;
+}
+
+h3::after{
+    content:'';
+    display:block;
+    position:absolute;
+    bottom:-.5rem;
+    left:0;
+    width:105%;
+    background-color:#320087;
+    height:3px;
+}
+
+.buttons{
+    display:inline-block;
+    padding:1rem 1.5rem;
+    font-size:1.1rem;
+    border-radius:50%;
+    cursor:pointer;
+    margin:1rem .5rem;
+    color:#000000;
+    font-style:italic;
+    font-weight:bold;
+    transition:.32s ease;
+}
+
+.edit{
+    background-color:#eaff82;
+}
+
+.edit:hover{
+    background-color:#9aac40;
+}
+
+.delete{
+    background-color:#ff9393;
+}
+
+.delete:hover{
+    background-color:#bd5454;
+}

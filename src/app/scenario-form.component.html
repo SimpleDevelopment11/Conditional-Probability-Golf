@@ -1,0 +1,29 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <ul>
+        <li>
+            <label for="shotType">Shot Type:</label>
+            <input type="text" name="shotType" id="shotType" formControlName="shotType">
+        </li>
+        <ng-template [ngIf]="(parent != null)">
+            <li>
+                <label for="probability">Probability:</label>
+                <input type="text" name="probability" id="probability" formControlName="probability">
+                <div *ngIf="form.get('probability').errors as probabilityErrors" class="error">
+                    <div *ngIf="probabilityErrors.error">
+                        {{probabilityErrors.error}}
+                    </div>
+                </div>
+            </li>
+            <li>
+                <label for="strokes">Strokes:</label>
+                <input type="text" name="strokes" id="strokes" formControlName="strokes">
+                <div *ngIf="form.get('strokes').errors as strokesErrors" class="error">
+                    <div *ngIf="strokesErrors.error">
+                        {{strokesErrors.error}}
+                    </div>
+                </div>
+            </li>
+        </ng-template>
+    </ul>
+    <button type="submit" [disabled]="!form.valid">Save</button>
+</form>

@@ -1,0 +1,20 @@
+<div class="wrapper" [ngClass]="{'waiting-state': isRemaining(), 'good-state': !isRemaining()}">
+    <header>
+        <h2>{{scenario.shotType}} | 
+            <ng-template [ngIf]="true"><span>Strokes: {{ scenario.strokes | strokesPipe }}</span></ng-template>
+            <ng-template [ngIf]="scenario.parent != null"><span> | Probability {{scenario.probability | number:'1.2-4'}}</span></ng-template>
+        </h2>
+        <div>
+            <a (click)="onEditPass(scenario)" class="buttons edit">Edit</a>
+            <a (click)="onDeletePass(scenario)" class="buttons delete">Delete</a>
+        </div>
+    </header>
+    <cp-comp *ngFor="let scenarioIter of scenario.childrenScenarios" [scenario]="scenarioIter" (delete)="onDeletePass($event)" (edit)="onEditPass($event)"></cp-comp>
+    <cp-form [parent]="scenario.parent" *ngIf="isEdit" [isEdit]="true" [editID]="scenario.id"></cp-form>
+    <ng-template [ngIf]="isRemaining() && isEdit === false">
+        <div class="addScenarioDiv">
+            <h3 class="addScenario">Add 'Then' Scenario</h3>
+        </div>
+        <cp-form [parent]="scenario"></cp-form>
+    </ng-template>
+</div>

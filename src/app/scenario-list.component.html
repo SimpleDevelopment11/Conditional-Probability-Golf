@@ -1,0 +1,5 @@
+<cp-comp *ngFor="let scenario of scenarios" [scenario]="scenario" class="topLevelScenario" (delete)="onScenarioDelete($event)" (edit)="onScenarioEdit($event)"></cp-comp>
+<div class="h2Div">
+    <h2>Add new top-level scenario:</h2>
+</div>
+<cp-form [parent]="null"></cp-form>
