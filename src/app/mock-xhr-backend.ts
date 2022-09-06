@@ -1,6 +1,5 @@
 import { HttpEvent, HttpRequest, HttpResponse, HttpBackend } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
-import { Scenario } from './scenario.service';
 
 export class MockXHRBackend implements HttpBackend {
   private scenarios = [
