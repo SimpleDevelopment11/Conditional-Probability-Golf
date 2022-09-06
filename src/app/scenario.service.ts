@@ -105,6 +105,7 @@ export interface Scenario {
     shotType: string,
     probability: number,
     strokes: number,
+    calculatedStrokes: number,
     parent: Scenario,
     childrenScenarios: Scenario[]
 }

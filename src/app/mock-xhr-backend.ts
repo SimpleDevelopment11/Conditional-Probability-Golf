@@ -5,6 +5,8 @@ export class MockXHRBackend implements HttpBackend {
   private scenarios = [
   ];
 
+  private missingText = "Mising Full Probability";
+
   handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
     return new Observable((responseObserver: Observer<HttpResponse<any>>) => {
       let responseOptions;
@@ -56,13 +58,15 @@ export class MockXHRBackend implements HttpBackend {
     scenario.id = this._getNewId();
       scenario.childrenScenarios = [];
       const parentScenario = this._getScenarioByID(scenario.parent, this.scenarios);
+      scenario.calculatedStrokes = scenario.strokes;
       if (parentScenario)
       {
         parentScenario.childrenScenarios.push(scenario);
       }
       else
       {
-        scenario.strokes = "Missing full Probability"
+        scenario.strokes = 0
+        scenario.calculatedStrokes = this.missingText;
         this.scenarios.push(scenario);
       }
       this._updateCheck(scenario);
@@ -101,6 +105,7 @@ export class MockXHRBackend implements HttpBackend {
       if (scenarioEdit.strokes)
       {
         scenario.strokes = scenarioEdit.strokes;
+        this._performProbabilityCheck(scenario);
       }
     }
     this._updateCheck(scenario);
@@ -122,6 +127,13 @@ export class MockXHRBackend implements HttpBackend {
       return;
     }
 
+    this._performProbabilityCheck(parentScenario);
+    this._checkForProbability(parentScenario);
+
+  }
+
+  _performProbabilityCheck(parentScenario)
+  {
     let totalProbability = 0;
     let expectedStrokes = 0;
     parentScenario.childrenScenarios.forEach((child) =>{
@@ -129,19 +141,17 @@ export class MockXHRBackend implements HttpBackend {
         return;
       }
       const probability = parseFloat(child.probability);
-      const strokes = parseFloat(child.strokes);
+      const strokes = parseFloat(child.calculatedStrokes);
       totalProbability += probability;
       expectedStrokes += probability * strokes;
     });
     if (totalProbability == 1){
-      parentScenario.strokes = parentScenario.parent === null ? expectedStrokes : (expectedStrokes + 1).toString();
+      parentScenario.calculatedStrokes = parentScenario.parent === null ? expectedStrokes : (expectedStrokes + parseInt(parentScenario.strokes)).toString();
     }
     else
     {
-      parentScenario.strokes = parentScenario.parent === null ? "Missing full Probability" : "1";
+      parentScenario.calculatedStrokes = parentScenario.parent === null ? this.missingText : parentScenario.strokes;
     }
-    this._checkForProbability(parentScenario);
-
   }
 
   _getNewId() {

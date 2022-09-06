@@ -1,7 +1,7 @@
 <div class="wrapper" [ngClass]="{'waiting-state': isRemaining(), 'good-state': !isRemaining()}">
     <header>
         <h2>{{scenario.shotType}} | 
-            <ng-template [ngIf]="true"><span>Strokes: {{ scenario.strokes | strokesPipe }}</span></ng-template>
+            <ng-template [ngIf]="true"><span>Expected Strokes: {{ scenario.calculatedStrokes | strokesPipe }}</span></ng-template>
             <ng-template [ngIf]="scenario.parent != null"><span> | Probability {{scenario.probability | number:'1.2-4'}}</span></ng-template>
         </h2>
         <div>
